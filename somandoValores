@@ -1,0 +1,33 @@
+import ipywidgets as widgets
+import pandas as pd
+
+# criando os dropdown que serão utilizados para realizar a interação de soma
+dropdown1 = widgets.Dropdown(options=[1,2,3])
+dropdown2 = widgets.Dropdown(options=[4,5,6])
+
+# cria uma "área" com os outputs dos componentes
+output = widgets.Output()
+list_widget_result = []
+
+# função que lida com as mudanças nos componentes
+def muda_drop_valores(change):
+    # limpa a área de output
+    output.clear_output('wait')
+    # abre a área de output enquanto roda o que está dentro, funciona similar ao with de arquivos
+    with output:
+        # printa a soma
+        resultado_soma = soma_valores(dropdown1.value, dropdown2.value)
+        print(resultado_soma)
+        list_widget_result.append(resultado_soma)
+        print(list_widget_result)
+
+# será usada para somar os valores de cada dropdown
+def soma_valores(a,b):
+    return a+b
+
+# criamos um observe para cada dropdown, pois a ideia é observar o comportamento de cada um individualmente
+dropdown1.observe(muda_drop_valores, names='value')
+dropdown2.observe(muda_drop_valores, names='value')
+
+# mostra os 2 dropdowns e a área de saída
+display(dropdown1, dropdown2, output)
